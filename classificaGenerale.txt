@@ -1,0 +1,9 @@
+1 primoGiocatore
+2 secondoGiocatore
+5 terzoGiocatore
+1 altroGiocatore
+4 quartoGiocatore
+2 quintoGiocatore
+35 settimoGiocatore
+2 ottavoGiocatore
+1 nonoGiocatore

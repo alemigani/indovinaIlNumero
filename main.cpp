@@ -96,7 +96,6 @@ public:
         // Meccanismo che aggiunge in coda
         giocatori.push_back(giocatore);
         punteggi.push_back(punteggio);
-
     }
 
     void stampaclassificaGenerale()
@@ -116,7 +115,7 @@ public:
 
         for (int i = 0; i < size; i++)
         {
-            cout << i + 1 << " Punteggio: " << punteggi[i] << " Giocatore: " << giocatori[i] << endl;
+            cout << i + 1 << "\tTentativi: " << punteggi[i] << "\tGiocatore: " << giocatori[i] << endl;
         }
         cout << "----------------------------------------------------------------" << endl;
     }
@@ -151,9 +150,13 @@ int main()
         switch (menu())
         {
         case 1:
+            classifica.stampaclassificaGenerale();
+
             numero = rand() % 1000 + 1;
+
             cout << "Numero da indovinare " << numero << endl;
             cout << "Indovina il numero tra 1 e 1000" << endl;
+
             while (tentativo != numero)
             {
                 contatore++;
@@ -161,15 +164,23 @@ int main()
                 cin >> tentativo;
                 if (tentativo < numero)
                 {
-                    cout << "il numero da indovinare è maggiore! riprova" << endl;
+                    cout << "Il numero da indovinare è maggiore! riprova" << endl;
                 }
                 else if (tentativo > numero)
                 {
-                    cout << "il numero da indovinare è minore! riprova" << endl;
+                    cout << "Il numero da indovinare è minore! riprova" << endl;
                 }
                 else
                 {
-                    cout << "Hai indovinato!! in " << contatore << " volte" << endl;
+                    if (contatore == 1)
+                    {
+                        cout << "Hai indovinato!! in " << contatore << " volta! OTTIMO" << endl;
+                    }
+                    else
+                    {
+                        cout << "Hai indovinato!! in " << contatore << " volte" << endl;
+                    }
+
                     cout << "Inserisci il tuo nome per la classifica generale!!" << endl;
                     string giocatore = "Anonimo";
                     cin >> giocatore;

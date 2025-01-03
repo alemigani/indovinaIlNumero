@@ -6,7 +6,8 @@
 
 using namespace std;
 
-void clearScreen(){
+void clearScreen()
+{
     std::cout << "\033[2J\033[1;1H";
 }
 
@@ -16,9 +17,8 @@ private:
     vector<string> giocatori;
     vector<int> punteggi;
 
-    int numeroPunteggiRegistrati = 10;
     int size = 0;
-    int MAX_SIZE = 10;
+    int MAX_SIZE = 9;
 
     void salvaClassificaGenerale()
     {
@@ -28,7 +28,16 @@ private:
             cout << "Errore apertura del file" << endl;
             return;
         }
-        for (int i = 0; i < giocatori.size(); i++)
+        int size;
+        if (giocatori.size() > MAX_SIZE)
+        {
+            size = MAX_SIZE;
+        }
+        else
+        {
+            size = giocatori.size();
+        }
+        for (int i = 0; i < size; i++)
         {
             file << punteggi[i] << " " << giocatori[i] << endl;
         }
@@ -55,34 +64,61 @@ public:
         file.close();
     }
 
-    ~ClassificaGenerale(){
+    ~ClassificaGenerale()
+    {
         salvaClassificaGenerale();
     }
 
     void aggiungiPunteggio(int punteggio, string giocatore)
     {
+        // Meccanismo con vector vuoto
+        if (punteggi.size() == 0)
+        {
+            punteggi.push_back(punteggio);
+            giocatori.push_back(giocatore);
+            return;
+        }
+
+        // Meccanismo che aggiunge il punteggio in posizione e fa scorrere il vector con gli altri elementi
+        auto gt = giocatori.begin();
+
+        for (auto it = punteggi.begin(); it != punteggi.end(); it++)
+        {
+            if (punteggio < *it)
+            {
+                punteggi.insert(it, punteggio);
+                giocatori.insert(gt, giocatore);
+                return;
+            }
+            gt++;
+        }
+
+        // Meccanismo che aggiunge in coda
         giocatori.push_back(giocatore);
         punteggi.push_back(punteggio);
-        salvaClassificaGenerale();
+
     }
-    
+
     void stampaclassificaGenerale()
     {
         clearScreen();
         cout << "\n\n\n\n";
-    cout << "-------------------- CLASSIFICA GENERALE -----------------------" << endl;
-    cout << endl;
-    if (giocatori.size() > MAX_SIZE){
-        size = MAX_SIZE;
-    }
-    else{
-        size = giocatori.size();   
-    }
+        cout << "-------------------- CLASSIFICA GENERALE -----------------------" << endl;
+        cout << endl;
+        if (giocatori.size() > MAX_SIZE)
+        {
+            size = MAX_SIZE;
+        }
+        else
+        {
+            size = giocatori.size();
+        }
 
-    for (int i = 0; i < size; i++){
-        cout << i+1 << " Punteggio: " << punteggi[i] << " Giocatore: " << giocatori[i] << endl;
-    }
-    cout << "----------------------------------------------------------------" << endl;
+        for (int i = 0; i < size; i++)
+        {
+            cout << i + 1 << " Punteggio: " << punteggi[i] << " Giocatore: " << giocatori[i] << endl;
+        }
+        cout << "----------------------------------------------------------------" << endl;
     }
 };
 
@@ -100,7 +136,6 @@ int menu()
     return scelta;
 }
 
-
 int main()
 {
     ClassificaGenerale classifica;
@@ -108,7 +143,7 @@ int main()
     int contatore = 0;
     int numero = 0;
     int tentativo = -1;
-    
+
     clearScreen();
 
     while (true)

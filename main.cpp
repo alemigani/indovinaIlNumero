@@ -101,7 +101,7 @@ public:
     void stampaclassificaGenerale()
     {
         clearScreen();
-        cout << "\n\n\n\n";
+        cout << "\n\n\n";
         cout << "-------------------- CLASSIFICA GENERALE -----------------------" << endl;
         cout << endl;
         if (giocatori.size() > MAX_SIZE)
@@ -128,6 +128,7 @@ int menu()
     cout << "----------------------------- MENU -----------------------------" << endl;
     cout << "1 - Gioca" << endl;
     cout << "2 - Classifica Generale" << endl;
+    cout << "3 - Gioca con l'aiuto della IA" << endl;
     cout << "0 - Uscita" << endl;
     cout << "----------------------------------------------------------------" << endl;
     cout << "> ";
@@ -143,12 +144,18 @@ int main()
     int numero = 0;
     int tentativo = -1;
 
+    int max = 1000;
+    int min = 1;
+
     clearScreen();
 
     while (true)
     {
         switch (menu())
         {
+        case 0:
+            cout << "Gioco terminato, alla prossima partita!!\n";
+            return 0;
         case 1:
             classifica.stampaclassificaGenerale();
 
@@ -190,12 +197,58 @@ int main()
                 }
             }
             break;
+
         case 2:
             classifica.stampaclassificaGenerale();
             break;
-        case 0:
-            cout << "Gioco terminato, alla prossima partita!!\n";
-            return 0;
+
+        case 3:
+            classifica.stampaclassificaGenerale();
+
+            numero = rand() % 1000 + 1;
+            
+            cout << "Numero da indovinare " << numero << endl;
+            cout << "Indovina il numero tra 1 e 1000" << endl;
+
+            while (tentativo != numero)
+            {
+                contatore++;
+                cout << "Inserisci il numero: ";
+                cin >> tentativo;
+
+                if (tentativo < numero)
+                {
+                    cout << "Il numero da indovinare è maggiore! riprova" << endl;
+                    min = tentativo;
+                    cout << "IA: ti suggerisco di inserire " << (max + min) / 2;
+                }
+                else if (tentativo > numero)
+                {
+                    cout << "Il numero da indovinare è minore! riprova" << endl;
+                    max = tentativo;
+                    cout << "IA: ti suggerisco di inserire " << (max + min) / 2;
+                }
+                else
+                {
+                    if (contatore == 1)
+                    {
+                        cout << "Hai indovinato!! in " << contatore << " volta! OTTIMO" << endl;
+                    }
+                    else
+                    {
+                        cout << "Hai indovinato!! in " << contatore << " volte" << endl;
+                    }
+                    /*
+                    cout << "Inserisci il tuo nome per la classifica generale!!" << endl;
+                    string giocatore = "Anonimo";
+                    cin >> giocatore;
+                    classifica.aggiungiPunteggio(contatore, giocatore);
+                    */
+                    contatore = 0;
+                    clearScreen();
+                }
+            }
+            break;
         default:
             cout << "Scelta non valida\n";
             break;

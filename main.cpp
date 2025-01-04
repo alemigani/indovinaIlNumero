@@ -161,7 +161,7 @@ int main()
 
             numero = rand() % 1000 + 1;
 
-            //cout << "Numero da indovinare " << numero << endl;
+            // cout << "Numero da indovinare " << numero << endl;
             cout << "Indovina il numero tra 1 e 1000" << endl;
 
             while (tentativo != numero)
@@ -206,8 +206,8 @@ int main()
             classifica.stampaclassificaGenerale();
 
             numero = rand() % 1000 + 1;
-            
-            //cout << "Numero da indovinare " << numero << endl;
+
+            // cout << "Numero da indovinare " << numero << endl;
             cout << "Indovina il numero tra 1 e 1000" << endl;
 
             while (tentativo != numero)
@@ -219,13 +219,19 @@ int main()
                 if (tentativo < numero)
                 {
                     cout << "Il numero da indovinare è maggiore! riprova" << endl;
-                    min = tentativo;
+                    if (tentativo >= 1 && tentativo <= 1000)
+                    {
+                        min = tentativo;
+                    }
                     cout << "IA: ti suggerisco di inserire " << (max + min) / 2;
                 }
                 else if (tentativo > numero)
                 {
                     cout << "Il numero da indovinare è minore! riprova" << endl;
-                    max = tentativo;
+                    if (tentativo >= 1 && tentativo <= 1000)
+                    {
+                        max = tentativo;
+                    }
                     cout << "IA: ti suggerisco di inserire " << (max + min) / 2;
                 }
                 else
@@ -238,11 +244,11 @@ int main()
                     {
                         cout << "Hai indovinato!! in " << contatore << " volte" << endl;
                     }
-                    
+
                     cout << "Hai usato l'IA non sarai iscritto in classifica generale!! Inserisci un carattere per continuare..." << endl;
                     string giocatore = "";
                     cin >> giocatore;
-                    
+
                     contatore = 0;
                     clearScreen();
                 }

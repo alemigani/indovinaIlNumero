@@ -161,7 +161,7 @@ int main()
 
             numero = rand() % 1000 + 1;
 
-            cout << "Numero da indovinare " << numero << endl;
+            //cout << "Numero da indovinare " << numero << endl;
             cout << "Indovina il numero tra 1 e 1000" << endl;
 
             while (tentativo != numero)
@@ -207,7 +207,7 @@ int main()
 
             numero = rand() % 1000 + 1;
             
-            cout << "Numero da indovinare " << numero << endl;
+            //cout << "Numero da indovinare " << numero << endl;
             cout << "Indovina il numero tra 1 e 1000" << endl;
 
             while (tentativo != numero)
@@ -238,12 +238,11 @@ int main()
                     {
                         cout << "Hai indovinato!! in " << contatore << " volte" << endl;
                     }
-                    /*
-                    cout << "Inserisci il tuo nome per la classifica generale!!" << endl;
-                    string giocatore = "Anonimo";
+                    
+                    cout << "Hai usato l'IA non sarai iscritto in classifica generale!! Inserisci un carattere per continuare..." << endl;
+                    string giocatore = "";
                     cin >> giocatore;
-                    classifica.aggiungiPunteggio(contatore, giocatore);
-                    */
+                    
                     contatore = 0;
                     clearScreen();
                 }

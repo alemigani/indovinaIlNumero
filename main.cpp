@@ -124,6 +124,7 @@ public:
 int menu()
 {
     int scelta = -1;
+    string stringaScelta = "";
     cout << "\n\n\n\n";
     cout << "----------------------------- MENU -----------------------------" << endl;
     cout << "1 - Gioca" << endl;
@@ -132,7 +133,21 @@ int menu()
     cout << "0 - Uscita" << endl;
     cout << "----------------------------------------------------------------" << endl;
     cout << "> ";
-    cin >> scelta;
+    cin >> stringaScelta;
+    try
+    {
+        scelta = stoi(stringaScelta);
+    }
+    catch (invalid_argument &e)
+    {
+        cout << "Errore: non hai immesso un numero valido" << endl;
+        return -1;
+    }
+    catch (out_of_range &e)
+    {
+        cout << "Errore: il numero è fuori dal range!!!" << endl;
+        return -1;
+    }
     return scelta;
 }
 
@@ -142,7 +157,8 @@ int main()
     srand(time(NULL));
     int contatore = 0;
     int numero = 0;
-    int tentativo = -1;
+    long long tentativo = -1;
+    string stringaTentativo = "";
 
     int max = 1000;
     int min = 1;
@@ -168,7 +184,22 @@ int main()
             {
                 contatore++;
                 cout << "Inserisci il numero: ";
-                cin >> tentativo;
+                cin >> stringaTentativo;
+                try
+                {
+                    tentativo = stoll(stringaTentativo);
+                }
+                catch (invalid_argument &e)
+                {
+                    cout << "Errore: non hai immesso un numero valido" << endl;
+                    break;
+                }
+                catch (out_of_range &e)
+                {
+                    cout << "Errore: il numero è fuori dal range!!!" << endl;
+                    break;
+                }
+
                 if (tentativo < numero)
                 {
                     cout << "Il numero da indovinare è maggiore! riprova" << endl;
@@ -214,8 +245,21 @@ int main()
             {
                 contatore++;
                 cout << "Inserisci il numero: ";
-                cin >> tentativo;
-
+                cin >> stringaTentativo;
+                try
+                {
+                    tentativo = stoll(stringaTentativo);
+                }
+                catch (invalid_argument &e)
+                {
+                    cout << "Errore: non hai immesso un numero valido" << endl;
+                    break;
+                }
+                catch (out_of_range &e)
+                {
+                    cout << "Errore: il numero è fuori dal range!!!" << endl;
+                    break;
+                }
                 if (tentativo < numero)
                 {
                     cout << "Il numero da indovinare è maggiore! riprova" << endl;
@@ -223,7 +267,7 @@ int main()
                     {
                         min = tentativo;
                     }
-                    cout << "IA: ti suggerisco di inserire " << (max + min) / 2;
+                    cout << "IA: ti suggerisco di inserire " << (max + min) / 2 << " " << endl;
                 }
                 else if (tentativo > numero)
                 {
@@ -232,7 +276,7 @@ int main()
                     {
                         max = tentativo;
                     }
-                    cout << "IA: ti suggerisco di inserire " << (max + min) / 2;
+                    cout << "IA: ti suggerisco di inserire " << (max + min) / 2 << " " << endl;
                 }
                 else
                 {

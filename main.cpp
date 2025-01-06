@@ -3,6 +3,7 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#include <chrono>
 
 using namespace std;
 
@@ -16,6 +17,7 @@ class ClassificaGenerale
 private:
     vector<string> giocatori;
     vector<int> punteggi;
+    vector<int> tempi;
 
     int size = 0;
     int MAX_SIZE = 9;
@@ -39,7 +41,12 @@ private:
         }
         for (int i = 0; i < size; i++)
         {
-            file << punteggi[i] << " " << giocatori[i] << endl;
+            file << punteggi[i];
+            file << " ";
+            file << giocatori[i];
+            file << " ";
+            file << tempi[i];
+            file << endl;
         }
         file.close();
     }
@@ -54,12 +61,15 @@ public:
         }
         string giocatore;
         int punteggio;
+        int tempo;
 
         while (file >> punteggio)
         {
             file >> giocatore;
+            file >> tempo;
             punteggi.push_back(punteggio);
             giocatori.push_back(giocatore);
+            tempi.push_back(tempo);
         }
         file.close();
     }
@@ -69,33 +79,50 @@ public:
         salvaClassificaGenerale();
     }
 
-    void aggiungiPunteggio(int punteggio, string giocatore)
+    void aggiungiPunteggio(int punteggio, string giocatore, int tempo)
     {
         // Meccanismo con vector vuoto
         if (punteggi.size() == 0)
         {
             punteggi.push_back(punteggio);
             giocatori.push_back(giocatore);
+            tempi.push_back(tempo);
             return;
         }
 
+
         // Meccanismo che aggiunge il punteggio in posizione e fa scorrere il vector con gli altri elementi
         auto gt = giocatori.begin();
+        auto tt = tempi.begin();
 
         for (auto it = punteggi.begin(); it != punteggi.end(); it++)
         {
-            if (punteggio < *it)
+            if (punteggio == *it)
+            {
+                if (tempo < *tt)
+                {
+                    punteggi.insert(it, punteggio);
+                    giocatori.insert(gt, giocatore);
+                    tempi.insert(tt, tempo);
+                    return;
+                }
+            }
+            else if (punteggio < *it)
             {
                 punteggi.insert(it, punteggio);
                 giocatori.insert(gt, giocatore);
+                tempi.insert(tt, tempo);
                 return;
             }
+
             gt++;
+            tt++;
         }
 
         // Meccanismo che aggiunge in coda
         giocatori.push_back(giocatore);
         punteggi.push_back(punteggio);
+        tempi.push_back(tempo);
     }
 
     void stampaclassificaGenerale()
@@ -115,7 +142,7 @@ public:
 
         for (int i = 0; i < size; i++)
         {
-            cout << i + 1 << "\tTentativi: " << punteggi[i] << "\tGiocatore: " << giocatori[i] << endl;
+            cout << i + 1 << "\tTentativi: " << punteggi[i] << "\tTempo: " << tempi[i] << "\tGiocatore: " << giocatori[i]  << endl;
         }
         cout << "----------------------------------------------------------------" << endl;
     }
@@ -163,6 +190,10 @@ int main()
     int max = 1000;
     int min = 1;
 
+    chrono::time_point<chrono::high_resolution_clock> inizio;
+    chrono::time_point<chrono::high_resolution_clock> fine;
+    int tempo;
+
     clearScreen();
 
     while (true)
@@ -173,13 +204,14 @@ int main()
             cout << "Gioco terminato, alla prossima partita!!\n";
             return 0;
         case 1:
+            
             classifica.stampaclassificaGenerale();
 
             numero = rand() % 1000 + 1;
 
             // cout << "Numero da indovinare " << numero << endl;
             cout << "Indovina il numero tra 1 e 1000" << endl;
-
+            inizio = chrono::high_resolution_clock::now();
             while (tentativo != numero)
             {
                 contatore++;
@@ -210,19 +242,22 @@ int main()
                 }
                 else
                 {
+                    fine = chrono::high_resolution_clock::now();
+                    tempo = chrono::duration_cast<chrono::seconds>(fine - inizio).count();
+
                     if (contatore == 1)
                     {
-                        cout << "Hai indovinato!! in " << contatore << " volta! OTTIMO" << endl;
+                        cout << "Hai indovinato!! in " << contatore << " volta! OTTIMO, in " << tempo << " secondi" << endl;
                     }
                     else
                     {
-                        cout << "Hai indovinato!! in " << contatore << " volte" << endl;
+                        cout << "Hai indovinato!! in " << contatore << " volte, in " << tempo << " secondi" << endl;
                     }
 
                     cout << "Inserisci il tuo nome per la classifica generale!!" << endl;
                     string giocatore = "Anonimo";
                     cin >> giocatore;
-                    classifica.aggiungiPunteggio(contatore, giocatore);
+                    classifica.aggiungiPunteggio(contatore, giocatore, tempo);
                     contatore = 0;
                     clearScreen();
                 }

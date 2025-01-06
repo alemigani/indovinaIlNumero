@@ -90,7 +90,6 @@ public:
             return;
         }
 
-
         // Meccanismo che aggiunge il punteggio in posizione e fa scorrere il vector con gli altri elementi
         auto gt = giocatori.begin();
         auto tt = tempi.begin();
@@ -142,7 +141,7 @@ public:
 
         for (int i = 0; i < size; i++)
         {
-            cout << i + 1 << "\tTentativi: " << punteggi[i] << "\tTempo: " << tempi[i] << "\tGiocatore: " << giocatori[i]  << endl;
+            cout << i + 1 << "\tTentativi: " << punteggi[i] << "\tTempo: " << tempi[i] << "\tGiocatore: " << giocatori[i] << endl;
         }
         cout << "----------------------------------------------------------------" << endl;
     }
@@ -204,7 +203,7 @@ int main()
             cout << "Gioco terminato, alla prossima partita!!\n";
             return 0;
         case 1:
-            
+
             classifica.stampaclassificaGenerale();
 
             numero = rand() % 1000 + 1;
@@ -254,9 +253,26 @@ int main()
                         cout << "Hai indovinato!! in " << contatore << " volte, in " << tempo << " secondi" << endl;
                     }
 
-                    cout << "Inserisci il tuo nome per la classifica generale!!" << endl;
+                    cout << "Inserisci il tuo nome per la classifica generale!! (Max 12 Lettere)" << endl;
                     string giocatore = "Anonimo";
                     cin >> giocatore;
+                    try
+                    {
+                        int lunghezza = giocatore.length();
+                        if (lunghezza > 12)
+                        {
+                            giocatore = giocatore.substr(0, 12);
+                        }
+                    }
+                    catch (invalid_argument &e)
+                    {
+                        giocatore = "Anonimo";
+                    }
+                    catch (out_of_range &e)
+                    {
+                        giocatore = giocatore.substr(0, 12);
+                    }
+
                     classifica.aggiungiPunteggio(contatore, giocatore, tempo);
                     contatore = 0;
                     clearScreen();
